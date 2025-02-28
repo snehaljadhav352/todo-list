@@ -1,16 +1,15 @@
 import { ITask } from "./types/tasks";
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = 'http://localhost:3000';
 
 export const getAllTodos = async (): Promise<ITask[]> => {
-  const res = await fetch(`${baseUrl}/tasks`, { cache: 'no-store' });
-  console.log("sdsddffdffd",baseUrl)
+  const res = await fetch(`${baseUrl}/api/tasks`, { cache: 'no-store' });
   const todos = await res.json();
   return todos;
 }
 
 export const addTodo = async (todo: ITask): Promise<ITask> => {
-  const res = await fetch(`${baseUrl}/tasks`, {
+  const res = await fetch(`${baseUrl}/api/tasks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22,7 +21,7 @@ export const addTodo = async (todo: ITask): Promise<ITask> => {
 }
 
 export const editTodo = async (todo: ITask): Promise<ITask> => {
-  const res = await fetch(`${baseUrl}/tasks/${todo.id}`, {
+  const res = await fetch(`${baseUrl}/api/tasks/${todo.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -34,7 +33,7 @@ export const editTodo = async (todo: ITask): Promise<ITask> => {
 }
 
 export const deleteTodo = async (id: string): Promise<void> => {
-  await fetch(`${baseUrl}/tasks/${id}`, {
+  await fetch(`${baseUrl}/api/tasks/${id}`, {
     method: 'DELETE',
   })
 }
