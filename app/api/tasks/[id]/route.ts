@@ -33,14 +33,36 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 }
 
 // DELETE method to remove a todo
+// export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+//   const { id } = params;
+//   const tasks = await readTodos();
+
+//   const filteredTasks = tasks.filter((task: any) => task.id !== id);
+//   if (tasks.length === filteredTasks.length) {
+//     return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+//   }
+//   await writeTodos(filteredTasks);
+//   return NextResponse.json({ message: 'Task deleted successfully' }, { status: 204 });
+// }
+
+// DELETE method to remove a todo
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const { id } = params;
-  const tasks = await readTodos();
 
-  const filteredTasks = tasks.filter((task: any) => task.id !== id);
-  if (tasks.length === filteredTasks.length) {
-    return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+  try {
+    const tasks = await readTodos();
+    const taskToDelete = tasks.find((task: any) => task.id === id);
+
+    if (!taskToDelete) {
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+    }
+
+    const updatedTasks = tasks.filter((task: any) => task.id !== id);
+    await writeTodos(updatedTasks);
+
+    // Return the deleted task with status 200
+    return NextResponse.json(taskToDelete, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-  await writeTodos(filteredTasks);
-  return NextResponse.json({ message: 'Task deleted successfully' }, { status: 204 });
 }

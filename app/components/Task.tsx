@@ -16,6 +16,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDeleted, setOpenModalDeleted] = useState<boolean>(false);
   const [taskToEdit, setTaskToEdit] = useState<string>(task.text);
+  const [deletedTasks, setDeletedTasks] = useState<any>('')
 
   const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -28,9 +29,16 @@ const Task: React.FC<TaskProps> = ({ task }) => {
   };
 
   const handleDeleteTask = async (id: string) => {
-    await deleteTodo(id);
-    setOpenModalDeleted(false);
-    router.refresh();
+    // await deleteTodo(id);
+    // setOpenModalDeleted(false);
+    // router.refresh();
+    const deletedTask = await deleteTodo(id);
+    console.log("deletedTask",deletedTask)
+  const updatedDeletedTasks = [...deletedTasks, deletedTask];
+  setDeletedTasks(updatedDeletedTasks);
+  router.refresh();
+  
+  localStorage.setItem('deletedTasks', JSON.stringify(updatedDeletedTasks));
   };
 
   return (

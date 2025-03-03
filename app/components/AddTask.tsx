@@ -18,9 +18,9 @@ const AddTask = () => {
       id: uuidv4(),
       text: newTaskValue,
     });
-    setNewTaskValue("");
     setModalOpen(false);
     router.refresh();
+    setNewTaskValue("");
   };
 
   return (

@@ -33,7 +33,14 @@ export const editTodo = async (todo: ITask): Promise<ITask> => {
 }
 
 export const deleteTodo = async (id: string): Promise<void> => {
-  await fetch(`${baseUrl}/api/tasks/${id}`, {
+  const res = await fetch(`${baseUrl}/api/tasks/${id}`, {
     method: 'DELETE',
-  })
+  });
+
+  if (!res.ok) {
+    const errorMessage = await res.text();
+    throw new Error(`Failed to delete task: ${errorMessage}`);
+  }
+
+ return res.json();
 }
